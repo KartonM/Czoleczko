@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">Czoleczko</string>
+    <string name="app_name">Czółeczko</string>
+    <string name="play">Zagraj!</string>
+    <string name="settings">Ustawienia</string>
+    <string name="no_question_packages">Nie dodano jeszcze żadnej paczki z pytaniami.\nDodaj paczkę, aby zagrać.</string>
+    <string name="add_question_package">Dodaj paczkę</string>
 </resources>
