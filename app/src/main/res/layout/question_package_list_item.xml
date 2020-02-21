@@ -1,18 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-
     <data>
         <variable
             name="viewModel"
             type="online.kozubek.czoleczko.QuestionPackageViewModel"/>
     </data>
-
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_margin="8dp"
-        android:gravity="center_vertical"
-        android:text="@{viewModel.name}"
-        tools:text="Przykladowa nazwa paczki"/>
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:gravity="center_vertical"
+            android:text="@{viewModel.name}"
+            tools:text="Przykladowa nazwa paczki"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:gravity="center_vertical"
+            android:text="@{@string/question_count_label(viewModel.questionsCount)}"
+            tools:text="Liczba pytań: 13"/>
+
+    </LinearLayout>
+
+
 </layout>

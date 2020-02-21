@@ -25,7 +25,9 @@ class QuestionRepository private constructor(context: Context) {
 
     fun getQuestionPackages(): LiveData<List<QuestionPackage>> = questionDao.getQuestionPackages()
 
-    fun getquestionPackageWithQuestions(id: UUID): LiveData<QuestionPackageWithQuestions?> = questionDao.getQuestionPackageWithQuestions(id)
+    fun getQuestionPackagesWithQuestions(): LiveData<List<QuestionPackageWithQuestions>> = questionDao.getQuestionPackagesWithQuestions()
+
+    fun getQuestionPackageWithQuestions(id: UUID): LiveData<QuestionPackageWithQuestions?> = questionDao.getQuestionPackageWithQuestions(id)
 
     fun addQuestionPackage(questionPackage: QuestionPackage) {
         executor.execute {

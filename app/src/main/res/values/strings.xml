@@ -4,4 +4,5 @@
     <string name="settings">Ustawienia</string>
     <string name="no_question_packages">Nie dodano jeszcze żadnej paczki z pytaniami.\nDodaj paczkę, aby zagrać.</string>
     <string name="add_question_package">Dodaj paczkę</string>
+    <string name="question_count_label">Liczba pytań: %1$d</string>
 </resources>

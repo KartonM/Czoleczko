@@ -14,6 +14,9 @@ interface QuestionDao {
     @Query("SELECT * FROM QuestionPackage")
     fun getQuestionPackages(): LiveData<List<QuestionPackage>>
 
+    @Transaction
+    @Query("SELECT * FROM QuestionPackage")
+    fun getQuestionPackagesWithQuestions(): LiveData<List<QuestionPackageWithQuestions>>
 
     @Transaction
     @Query("SELECT * FROM QuestionPackage WHERE questionPackageId=(:id)")
