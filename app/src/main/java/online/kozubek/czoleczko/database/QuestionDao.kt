@@ -1,10 +1,7 @@
 package online.kozubek.czoleczko.database
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Transaction
+import androidx.room.*
 import online.kozubek.czoleczko.Question
 import online.kozubek.czoleczko.QuestionPackage
 import java.util.*
@@ -27,4 +24,7 @@ interface QuestionDao {
 
     @Insert
     fun addQuestion(question: Question)
+
+    @Delete
+    fun deleteQuestionPackage(questionPackage: QuestionPackage)
 }

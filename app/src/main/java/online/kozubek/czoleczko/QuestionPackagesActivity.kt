@@ -54,7 +54,7 @@ class QuestionPackagesActivity : AppCompatActivity() {
     private inner class QuestionPackageViewHolder(private val binding: QuestionPackageListItemBinding)
         : RecyclerView.ViewHolder(binding.root) {
         init {
-            binding.viewModel = QuestionPackageViewModel()
+            binding.viewModel = QuestionPackageViewModel(this@QuestionPackagesActivity)
         }
 
         fun bind(questionPackage: QuestionPackageWithQuestions) {
