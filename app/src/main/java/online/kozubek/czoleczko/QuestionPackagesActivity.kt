@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.AttributeSet
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -49,6 +51,31 @@ class QuestionPackagesActivity : AppCompatActivity() {
         )
 
         return view
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val rtn = super.onCreateOptionsMenu(menu)
+
+        menuInflater.inflate(R.menu.activity_question_packages, menu)
+
+        return rtn
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.new_question_package -> {
+
+                AddQuestionPackageFragment().show(supportFragmentManager, "dodaj ziomkow")
+//TODO("Opalic tego dialoga")
+//                photoView.setOnClickListener {
+//                    ZoomedPhotoFragment.newInstance(photoFile.path).apply {
+//                        setTargetFragment(this@CrimeFragment, 5)
+//                        show(this@CrimeFragment.requireFragmentManager(), "DialogPhoto")
+//                    }
+//                }
+                true
+            } else -> super.onOptionsItemSelected(item)
+        }
     }
 
     private inner class QuestionPackageViewHolder(private val binding: QuestionPackageListItemBinding)
