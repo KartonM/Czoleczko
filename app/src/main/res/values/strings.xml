@@ -10,4 +10,11 @@
     <string name="cancel">anuluj</string>
     <string name="insert_package_name">Wprowadź nazwę paczki</string>
     <string name="package_name">Nazwa paczki</string>
+    <string name="no_questions">Nie dodano jeszcze źadnych pytań w tej paczce.</string>
+    <string name="add_question">Dodaj pytanie</string>
+    <string name="new_question">Dodaj pytanie</string>
+    <string name="edit_question_package_name">Zmień nazwę paczki</string>
+    <string name="question_text">Treść pytania</string>
+    <string name="question_additional_text">Dodatkowe info (niewymagane)</string>
+    <string name="insert_question">Wprowadź pytanie</string>
 </resources>

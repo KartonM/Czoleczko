@@ -10,6 +10,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.LinearLayout
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -42,7 +43,7 @@ class QuestionPackagesActivity : AppCompatActivity(), AddQuestionPackageFragment
 
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = QuestionPackageAdapter(emptyList())
+            adapter = QuestionPackageAdapter(listOf<QuestionPackage>(QuestionPackage(name = "jeden"), QuestionPackage(name = "dwa"), QuestionPackage(name="trzy")))
         }
 
 
@@ -52,19 +53,20 @@ class QuestionPackagesActivity : AppCompatActivity(), AddQuestionPackageFragment
         }
     }
 
-    override fun onCreateView(name: String, context: Context, attrs: AttributeSet): View? {
-        val view = super.onCreateView(name, context, attrs)
-
-
-        questionPackagesViewModel.questionPackagesWithQuestionsLiveData.observe(
-            this,
-            Observer {
-                binding.recyclerView.adapter = QuestionPackageAdapter(it)
-            }
-        )
-
-        return view
-    }
+//    override fun onCreateView(name: String, context: Context, attrs: AttributeSet): View? {
+//        val view = super.onCreateView(name, context, attrs)
+//
+//
+//        questionPackagesViewModel.questionPackagesWithQuestionsLiveData.observe(
+//            this,
+//            Observer {
+//                Log.d("TEST", "run")
+//                binding.recyclerView.adapter = QuestionPackageAdapter(it)
+//            }
+//        )
+//
+//        return view
+//    }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val rtn = super.onCreateOptionsMenu(menu)
@@ -98,7 +100,7 @@ class QuestionPackagesActivity : AppCompatActivity(), AddQuestionPackageFragment
             binding.viewModel = QuestionPackageViewModel(this@QuestionPackagesActivity)
         }
 
-        fun bind(questionPackage: QuestionPackageWithQuestions) {
+        fun bind(questionPackage: QuestionPackage) {
             binding.apply {
                 viewModel?.questionPackage = questionPackage
                 executePendingBindings()
@@ -106,7 +108,7 @@ class QuestionPackagesActivity : AppCompatActivity(), AddQuestionPackageFragment
         }
     }
 
-    private inner class QuestionPackageAdapter(private val questionPackages: List<QuestionPackageWithQuestions>) : RecyclerView.Adapter<QuestionPackageViewHolder>() {
+    private inner class QuestionPackageAdapter(private val questionPackages: List<QuestionPackage>) : RecyclerView.Adapter<QuestionPackageViewHolder>() {
         override fun onCreateViewHolder(
             parent: ViewGroup,
             viewType: Int
@@ -121,7 +123,10 @@ class QuestionPackagesActivity : AppCompatActivity(), AddQuestionPackageFragment
             return QuestionPackageViewHolder(binding)
         }
 
-        override fun getItemCount(): Int = questionPackages.size
+        override fun getItemCount(): Int {
+            Log.e("TEST", questionPackages.size.toString())
+            return questionPackages.size
+        }
 
         override fun onBindViewHolder(holder: QuestionPackageViewHolder, position: Int) {
             holder.bind(questionPackages[position])

@@ -6,7 +6,7 @@ import androidx.room.TypeConverters
 import online.kozubek.czoleczko.Question
 import online.kozubek.czoleczko.QuestionPackage
 
-@Database(entities = [QuestionPackage::class, Question::class], version = 1)
+@Database(entities = [QuestionPackage::class], version = 1)
 @TypeConverters(QuestionTypeConverters::class)
 abstract class QuestionDatabase : RoomDatabase(){
     abstract fun questionDao(): QuestionDao

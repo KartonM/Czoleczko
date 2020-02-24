@@ -1,53 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-
     <data>
         <variable
             name="viewModel"
-            type="online.kozubek.czoleczko.QuestionPackagesViewModel"/>
+            type="online.kozubek.czoleczko.QuestionsViewModel"/>
     </data>
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:context=".QuestionPackagesActivity">
-
+        android:orientation="vertical">
 
         <LinearLayout
-            android:id="@+id/linearLayout2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
             android:orientation="vertical"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-<!--            android:visibility="@{viewModel.noPackagesMessageVisibility}"-->
-
+            android:gravity="center_horizontal"
+            android:visibility="@{viewModel.noQuestionsMessageVisibility}">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@string/no_questions"
+                android:textAlignment="center"
                 android:layout_gravity="center"
                 android:layout_margin="8dp"
-                android:layout_marginHorizontal="16dp"
-                android:text="@string/no_question_packages"
-                android:textAlignment="center" />
+                android:layout_marginHorizontal="16dp"/>
 
             <Button
-                android:id="@+id/add_question_package"
+                android:id="@+id/add_question"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/add_question_package" />
+                android:text="@string/add_question"/>
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="400dp"
-            android:background="@color/colorAccent" />
+            android:layout_height="600dp"/>
 
 
     </LinearLayout>
