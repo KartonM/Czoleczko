@@ -20,4 +20,8 @@ class QuestionPackagesViewModel : ViewModel() {
         Transformations.map(questionPackagesWithQuestionsLiveData) { questionPackages ->
             if (questionPackages.any()) View.GONE else View.VISIBLE
         }
+
+    fun addQuestionPackage(questionPackage: QuestionPackage) {
+        questionRepository.addQuestionPackage(questionPackage)
+    }
 }

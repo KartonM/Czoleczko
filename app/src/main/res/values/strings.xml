@@ -6,4 +6,8 @@
     <string name="add_question_package">Dodaj paczkę</string>
     <string name="question_count_label">Liczba pytań: %1$d</string>
     <string name="new_question_package">Nowa Paczka Pytań</string>
+    <string name="confirm">ok</string>
+    <string name="cancel">anuluj</string>
+    <string name="insert_package_name">Wprowadź nazwę paczki</string>
+    <string name="package_name">Nazwa paczki</string>
 </resources>

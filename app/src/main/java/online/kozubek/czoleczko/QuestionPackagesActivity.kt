@@ -4,10 +4,12 @@ import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.AttributeSet
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -19,9 +21,12 @@ import online.kozubek.czoleczko.databinding.QuestionPackageListItemBinding
 
 private const val TAG = "QuestionPackagesRepo"
 
-class QuestionPackagesActivity : AppCompatActivity() {
+class QuestionPackagesActivity : AppCompatActivity(), AddQuestionPackageFragment.Callbacks {
 
     private lateinit var binding: ActivityQuestionPackagesBinding
+
+    //TODO("Ask someone whether the button should be managed from ViewModel")
+    private lateinit var addPackageButton: Button
 
     private val questionPackagesViewModel: QuestionPackagesViewModel by lazy {
         ViewModelProviders.of(this).get(QuestionPackagesViewModel::class.java)
@@ -29,6 +34,7 @@ class QuestionPackagesActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_question_packages)
         binding.lifecycleOwner = this
 
@@ -38,10 +44,17 @@ class QuestionPackagesActivity : AppCompatActivity() {
             layoutManager = LinearLayoutManager(context)
             adapter = QuestionPackageAdapter(emptyList())
         }
+
+
+        addPackageButton = findViewById(R.id.add_question_package)
+        addPackageButton.setOnClickListener {
+            showAddPackageDialog()
+        }
     }
 
     override fun onCreateView(name: String, context: Context, attrs: AttributeSet): View? {
         val view = super.onCreateView(name, context, attrs)
+
 
         questionPackagesViewModel.questionPackagesWithQuestionsLiveData.observe(
             this,
@@ -64,18 +77,19 @@ class QuestionPackagesActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.new_question_package -> {
-
-                AddQuestionPackageFragment().show(supportFragmentManager, "dodaj ziomkow")
-//TODO("Opalic tego dialoga")
-//                photoView.setOnClickListener {
-//                    ZoomedPhotoFragment.newInstance(photoFile.path).apply {
-//                        setTargetFragment(this@CrimeFragment, 5)
-//                        show(this@CrimeFragment.requireFragmentManager(), "DialogPhoto")
-//                    }
-//                }
+                showAddPackageDialog()
                 true
             } else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onPackageNameInserted(name: String) {
+        binding.viewModel?.addQuestionPackage(QuestionPackage(name = name))
+    }
+
+    private fun showAddPackageDialog() {
+        AddQuestionPackageFragment().show(supportFragmentManager, "ADD_PACKAGE")
+
     }
 
     private inner class QuestionPackageViewHolder(private val binding: QuestionPackageListItemBinding)
