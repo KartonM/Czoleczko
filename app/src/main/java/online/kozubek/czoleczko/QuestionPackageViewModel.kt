@@ -1,13 +1,12 @@
 package online.kozubek.czoleczko
 
 import android.content.Context
-import android.content.Intent
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
-//import online.kozubek.czoleczko.database.QuestionPackageWithQuestions
+import online.kozubek.czoleczko.database.QuestionPackageWithQuestions
 
 class QuestionPackageViewModel(private val context: Context) : BaseObservable() {
-    var questionPackage: QuestionPackage? = null
+    var questionPackageWithQuestions: QuestionPackageWithQuestions? = null
         set(questionPackage) {
             field = questionPackage
             notifyChange()
@@ -15,25 +14,24 @@ class QuestionPackageViewModel(private val context: Context) : BaseObservable() 
 
     @get: Bindable
     val name: String?
-        get() = questionPackage?.name
+        get() = questionPackageWithQuestions?.questionPackage?.name
 
     @get: Bindable
     val questionsCount: Int?
-    get() = 13
-        //get() = questionPackage?.questions?.size
+        get() = questionPackageWithQuestions?.questions?.size
 
     fun onPackageClick() {
 
     }
 
     fun onDeleteClick() {
-        questionPackage?.let {
-            QuestionRepository.get().deleteQuestionPackage(it)
+        questionPackageWithQuestions?.let {
+            QuestionRepository.get().deleteQuestionPackage(it.questionPackage)
         }
     }
 
     fun onEditClick() {
-        val id = questionPackage?.questionPackageId!!
+        val id = questionPackageWithQuestions?.questionPackage?.questionPackageId!!
         context.startActivity(QuestionsActivity.newIntent(context, id))
     }
 }

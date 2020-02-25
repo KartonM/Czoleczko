@@ -4,15 +4,12 @@ import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.AttributeSet
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.LinearLayout
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -60,8 +57,7 @@ class QuestionPackagesActivity : AppCompatActivity(), AddQuestionPackageFragment
         val view = super.onCreateView(name, context, attrs)
 
 
-        questionPackagesViewModel.questionPackages.observe(
-        //QuestionRepository.get().getQuestionPackages().observe(
+        questionPackagesViewModel.questionPackagesWithQuestionsLiveData.observe(
             this@QuestionPackagesActivity,
             Observer {
                 it?.let {
@@ -105,15 +101,15 @@ class QuestionPackagesActivity : AppCompatActivity(), AddQuestionPackageFragment
             binding.viewModel = QuestionPackageViewModel(this@QuestionPackagesActivity)
         }
 
-        fun bind(questionPackage: QuestionPackage) {
+        fun bind(questionPackage: QuestionPackageWithQuestions) {
             binding.apply {
-                viewModel?.questionPackage = questionPackage
+                viewModel?.questionPackageWithQuestions = questionPackage
                 executePendingBindings()
             }
         }
     }
 
-    private inner class QuestionPackageAdapter(private var questionPackages: List<QuestionPackage>) : RecyclerView.Adapter<QuestionPackageViewHolder>() {
+    private inner class QuestionPackageAdapter(private var questionPackages: List<QuestionPackageWithQuestions>) : RecyclerView.Adapter<QuestionPackageViewHolder>() {
         override fun onCreateViewHolder(
             parent: ViewGroup,
             viewType: Int
@@ -137,7 +133,7 @@ class QuestionPackagesActivity : AppCompatActivity(), AddQuestionPackageFragment
             holder.bind(questionPackages[position])
         }
 
-        fun setData(questionPackages: List<QuestionPackage>) {
+        fun setData(questionPackages: List<QuestionPackageWithQuestions>) {
             this.questionPackages = questionPackages
         }
     }

@@ -13,13 +13,13 @@ import online.kozubek.czoleczko.database.QuestionPackageWithQuestions
 class QuestionPackagesViewModel : ViewModel() {
     private val questionRepository = QuestionRepository.get()
 
-//    val questionPackagesWithQuestionsLiveData: LiveData<List<QuestionPackage>> =
-//        questionRepository.getQuestionPackages()
+    val questionPackagesWithQuestionsLiveData: LiveData<List<QuestionPackageWithQuestions>> =
+        questionRepository.getQuestionPackagesWithQuestions()
 
-    val questionPackages: LiveData<List<QuestionPackage>> = questionRepository.getQuestionPackages()
+//    val questionPackages: LiveData<List<QuestionPackage>> = questionRepository.getQuestionPackages()
 
     var noPackagesMessageVisibility: LiveData<Int> =
-        Transformations.map(questionPackages) { questionPackages ->
+        Transformations.map(questionPackagesWithQuestionsLiveData) { questionPackages ->
             if (questionPackages.any()) View.GONE else View.VISIBLE
         }
 
