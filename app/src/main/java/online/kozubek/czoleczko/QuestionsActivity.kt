@@ -26,7 +26,7 @@ class QuestionsActivity : AppCompatActivity(), EditQuestionFragment.Callbacks {
 
     private lateinit var viewModelFactory: QuestionsViewModelFactory
     private lateinit var binding: ActivityQuestionsBinding
-    private lateinit var adapter: QuestionAdapter
+    private  var adapter: QuestionAdapter = QuestionAdapter()
 
     private val questionsViewModel: QuestionsViewModel by lazy {
         ViewModelProviders.of(this, viewModelFactory).get(QuestionsViewModel::class.java)
@@ -45,7 +45,6 @@ class QuestionsActivity : AppCompatActivity(), EditQuestionFragment.Callbacks {
             lifecycleOwner = this@QuestionsActivity
             viewModel = questionsViewModel
 
-            adapter = QuestionAdapter(emptyList())
             recyclerView.apply {
                 layoutManager = LinearLayoutManager(context)
                 this@apply.adapter = this@QuestionsActivity.adapter
@@ -53,31 +52,19 @@ class QuestionsActivity : AppCompatActivity(), EditQuestionFragment.Callbacks {
 
         }
 
-        findViewById<Button>(R.id.add_question).setOnClickListener {
-            showAddQuestionDialog()
-        }
-    }
-
-    override fun onCreateView(name: String, context: Context, attrs: AttributeSet): View? {
-        val view =  super.onCreateView(name, context, attrs)
-
         questionsViewModel.questionPackageWithQuestionsLiveData.observe(
             this,
             androidx.lifecycle.Observer {
-                Log.i("QUESTIONS", "Observer called, ${it?.questions?.size} items")
                 it?.let {
-                    if(adapter.questions != it.questions) {
-                        adapter = QuestionAdapter(it.questions)
-                        binding.recyclerView.adapter = adapter
-                    } else {
-                        adapter.setData(it.questions)
-                    }
+                    adapter.setData(it.questions)
                     supportActionBar?.title = it.questionPackage.name
                 }
             }
         )
 
-        return view
+        findViewById<Button>(R.id.add_question).setOnClickListener {
+            showAddQuestionDialog()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -138,8 +125,9 @@ class QuestionsActivity : AppCompatActivity(), EditQuestionFragment.Callbacks {
         }
     }
 
-    private inner class QuestionAdapter(var questions: List<Question>)
-        : RecyclerView.Adapter<QuestionViewHolder>() {
+    private inner class QuestionAdapter() : RecyclerView.Adapter<QuestionViewHolder>() {
+        private var questions: List<Question> = emptyList<Question>()
+
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): QuestionViewHolder {
             val binding = DataBindingUtil.inflate<QuestionListItemBinding>(
                 layoutInflater,
@@ -159,6 +147,7 @@ class QuestionsActivity : AppCompatActivity(), EditQuestionFragment.Callbacks {
 
         fun setData(questions: List<Question>) {
             this.questions = questions
+            notifyDataSetChanged()
         }
 
     }

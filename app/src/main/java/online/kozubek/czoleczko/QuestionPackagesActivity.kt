@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.AttributeSet
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -34,9 +35,12 @@ class QuestionPackagesActivity : AppCompatActivity(), AddQuestionPackageFragment
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        Log.i("DUPA", "przed super onCreate")
         super.onCreate(savedInstanceState)
+        Log.i("DUPA", "po super onCreate")
 
-        adapter = QuestionPackageAdapter(emptyList())
+
+        adapter = QuestionPackageAdapter()
         binding = DataBindingUtil.setContentView(this, R.layout.activity_question_packages)
 
         binding.lifecycleOwner = this
@@ -47,32 +51,19 @@ class QuestionPackagesActivity : AppCompatActivity(), AddQuestionPackageFragment
             adapter = this@QuestionPackagesActivity.adapter
         }
 
+        questionPackagesViewModel.questionPackagesWithQuestionsLiveData.observe(
+            this@QuestionPackagesActivity,
+            Observer {
+                it?.let {
+                    adapter.setData(it)
+                }
+            }
+        )
 
         addPackageButton = findViewById(R.id.add_question_package)
         addPackageButton.setOnClickListener {
             showAddPackageDialog()
         }
-    }
-
-    override fun onCreateView(name: String, context: Context, attrs: AttributeSet): View? {
-        val view = super.onCreateView(name, context, attrs)
-
-
-        questionPackagesViewModel.questionPackagesWithQuestionsLiveData.observe(
-            this@QuestionPackagesActivity,
-            Observer {
-                it?.let {
-                    if(adapter.questionPackages != it) {
-                        adapter = QuestionPackageAdapter(it)
-                        binding.recyclerView.adapter = adapter
-                    } else {
-                        adapter.setData(it)
-                    }
-                }
-            }
-        )
-
-        return view
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -115,7 +106,9 @@ class QuestionPackagesActivity : AppCompatActivity(), AddQuestionPackageFragment
         }
     }
 
-    private inner class QuestionPackageAdapter(var questionPackages: List<QuestionPackageWithQuestions>) : RecyclerView.Adapter<QuestionPackageViewHolder>() {
+    private inner class QuestionPackageAdapter() : RecyclerView.Adapter<QuestionPackageViewHolder>() {
+        private var questionPackages: List<QuestionPackageWithQuestions> = emptyList<QuestionPackageWithQuestions>()
+
         override fun onCreateViewHolder(
             parent: ViewGroup,
             viewType: Int
@@ -141,6 +134,7 @@ class QuestionPackagesActivity : AppCompatActivity(), AddQuestionPackageFragment
 
         fun setData(questionPackages: List<QuestionPackageWithQuestions>) {
             this.questionPackages = questionPackages
+            notifyDataSetChanged()
         }
     }
 }
