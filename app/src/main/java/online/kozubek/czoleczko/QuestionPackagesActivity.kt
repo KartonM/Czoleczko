@@ -14,6 +14,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.GridLayoutManager
 import online.kozubek.czoleczko.database.QuestionPackageWithQuestions
 import online.kozubek.czoleczko.databinding.ActivityQuestionPackagesBinding
 import online.kozubek.czoleczko.databinding.QuestionPackageListItemBinding
