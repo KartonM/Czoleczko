@@ -10,6 +10,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
@@ -65,7 +66,13 @@ class QuestionsActivity : AppCompatActivity(), EditQuestionFragment.Callbacks {
             androidx.lifecycle.Observer {
                 Log.i("QUESTIONS", "Observer called, ${it?.questions?.size} items")
                 it?.let {
-                    adapter.setData(it.questions)
+                    if(adapter.questions != it.questions) {
+                        adapter = QuestionAdapter(it.questions)
+                        binding.recyclerView.adapter = adapter
+                    } else {
+                        adapter.setData(it.questions)
+                    }
+                    supportActionBar?.title = it.questionPackage.name
                 }
             }
         )
@@ -120,7 +127,7 @@ class QuestionsActivity : AppCompatActivity(), EditQuestionFragment.Callbacks {
     private inner class QuestionViewHolder(private val binding: QuestionListItemBinding) : RecyclerView.ViewHolder(binding.root) {
         init {
             Log.i("QUESTIONS", "ViewHolder initialized")
-            binding.viewModel = QuestionViewModel()
+            binding.viewModel = QuestionViewModel(this@QuestionsActivity)
         }
 
         fun bind(question: Question) {
@@ -131,7 +138,7 @@ class QuestionsActivity : AppCompatActivity(), EditQuestionFragment.Callbacks {
         }
     }
 
-    private inner class QuestionAdapter(private var questions: List<Question>)
+    private inner class QuestionAdapter(var questions: List<Question>)
         : RecyclerView.Adapter<QuestionViewHolder>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): QuestionViewHolder {
             val binding = DataBindingUtil.inflate<QuestionListItemBinding>(
@@ -151,7 +158,7 @@ class QuestionsActivity : AppCompatActivity(), EditQuestionFragment.Callbacks {
         }
 
         fun setData(questions: List<Question>) {
-            this@QuestionAdapter.questions = questions
+            this.questions = questions
         }
 
     }

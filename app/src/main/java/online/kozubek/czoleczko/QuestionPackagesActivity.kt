@@ -61,7 +61,12 @@ class QuestionPackagesActivity : AppCompatActivity(), AddQuestionPackageFragment
             this@QuestionPackagesActivity,
             Observer {
                 it?.let {
-                    adapter.setData(it)
+                    if(adapter.questionPackages != it) {
+                        adapter = QuestionPackageAdapter(it)
+                        binding.recyclerView.adapter = adapter
+                    } else {
+                        adapter.setData(it)
+                    }
                 }
             }
         )
@@ -109,7 +114,7 @@ class QuestionPackagesActivity : AppCompatActivity(), AddQuestionPackageFragment
         }
     }
 
-    private inner class QuestionPackageAdapter(private var questionPackages: List<QuestionPackageWithQuestions>) : RecyclerView.Adapter<QuestionPackageViewHolder>() {
+    private inner class QuestionPackageAdapter(var questionPackages: List<QuestionPackageWithQuestions>) : RecyclerView.Adapter<QuestionPackageViewHolder>() {
         override fun onCreateViewHolder(
             parent: ViewGroup,
             viewType: Int
