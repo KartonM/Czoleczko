@@ -20,18 +20,20 @@ class QuestionRepository private constructor(context: Context) {
     ).build()
 
     private val questionDao = db.questionDao()
+    private val questionPackageDao = db.questionPackageDao()
     private val executor = Executors.newSingleThreadExecutor()
 
+    fun getQuestionPackage(id: UUID): LiveData<QuestionPackage?> = questionPackageDao.getQuestionPackage(id)
 
-    fun getQuestionPackages(): LiveData<List<QuestionPackage>> = questionDao.getQuestionPackages()
+    fun getQuestionPackages(): LiveData<List<QuestionPackage>> = questionPackageDao.getQuestionPackages()
 
-    fun getQuestionPackagesWithQuestions(): LiveData<List<QuestionPackageWithQuestions>> = questionDao.getQuestionPackagesWithQuestions()
+    fun getQuestionPackagesWithQuestions(): LiveData<List<QuestionPackageWithQuestions>> = questionPackageDao.getQuestionPackagesWithQuestions()
 
-    fun getQuestionPackageWithQuestions(id: UUID): LiveData<QuestionPackageWithQuestions?> = questionDao.getQuestionPackageWithQuestions(id)
+    fun getQuestionPackageWithQuestions(id: UUID): LiveData<QuestionPackageWithQuestions?> = questionPackageDao.getQuestionPackageWithQuestions(id)
 
     fun addQuestionPackage(questionPackage: QuestionPackage) {
         executor.execute {
-            questionDao.addQuestionPackage(questionPackage)
+            questionPackageDao.addQuestionPackage(questionPackage)
         }
     }
 
@@ -49,7 +51,19 @@ class QuestionRepository private constructor(context: Context) {
 
     fun deleteQuestionPackage(questionPackage: QuestionPackage) {
         executor.execute {
-            questionDao.deleteQuestionPackage(questionPackage)
+            questionPackageDao.deleteQuestionPackage(questionPackage)
+        }
+    }
+
+    fun getQuestions(): LiveData<List<Question>> = questionDao.getQuestions()
+
+    fun getQuestionsByPackageId(packageId: UUID) = questionDao.getQuestionsByPackageId(packageId)
+
+    fun getQuestion(id: UUID): LiveData<Question?> = questionDao.getQuestion(id)
+
+    fun deleteQuestion(question: Question) {
+        executor.execute {
+            questionDao.deleteQuestion(question)
         }
     }
 

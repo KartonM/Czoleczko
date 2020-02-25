@@ -42,7 +42,7 @@ class QuestionPackagesActivity : AppCompatActivity(), AddQuestionPackageFragment
         binding.viewModel = questionPackagesViewModel
 
         binding.recyclerView.apply {
-            layoutManager = LinearLayoutManager(context)
+            layoutManager = LinearLayoutManager(this@QuestionPackagesActivity)
             adapter = QuestionPackageAdapter(listOf<QuestionPackage>(QuestionPackage(name = "jeden"), QuestionPackage(name = "dwa"), QuestionPackage(name="trzy")))
         }
 

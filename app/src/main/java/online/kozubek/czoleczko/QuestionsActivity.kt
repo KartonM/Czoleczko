@@ -3,7 +3,6 @@ package online.kozubek.czoleczko
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
@@ -80,7 +79,7 @@ class QuestionsActivity : AppCompatActivity(), EditQuestionFragment.Callbacks {
             val question = Question(
                 text = questionText,
                 additionalText = questionAdditionalText,
-                questionPackageId = binding.viewModel?.questionPackageId!!
+                packageId = binding.viewModel?.questionPackageId!!
             )
 
             binding.viewModel?.addQuestion(question)

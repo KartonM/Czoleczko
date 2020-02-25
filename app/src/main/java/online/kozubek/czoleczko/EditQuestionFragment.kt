@@ -79,7 +79,7 @@ class EditQuestionFragment : DialogFragment() {
                     putString(ARG_ID, it.questionId.toString())
                     putString(ARG_TEXT, it.text)
                     putString(ARG_ADDITIONAL_TEXT, it.additionalText)
-                    putString(ARG_PACKAGE_ID, it.questionPackageId.toString())
+                    putString(ARG_PACKAGE_ID, it.packageId.toString())
                 }
             }
 

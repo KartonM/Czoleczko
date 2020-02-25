@@ -8,19 +8,15 @@ import java.util.*
 
 @Dao
 interface QuestionDao {
-    @Query("SELECT * FROM QuestionPackage")
-    fun getQuestionPackages(): LiveData<List<QuestionPackage>>
 
-    @Transaction
-    @Query("SELECT * FROM QuestionPackage")
-    fun getQuestionPackagesWithQuestions(): LiveData<List<QuestionPackageWithQuestions>>
+    @Query("SELECT * FROM Question")
+    fun getQuestions(): LiveData<List<Question>>
 
-    @Transaction
-    @Query("SELECT * FROM QuestionPackage WHERE questionPackageId=(:id)")
-    fun getQuestionPackageWithQuestions(id: UUID): LiveData<QuestionPackageWithQuestions?>
+    @Query("SELECT * FROM Question WHERE packageId=(:questionPackageId)")
+    fun getQuestionsByPackageId(questionPackageId: UUID): LiveData<List<Question>>
 
-    @Insert
-    fun addQuestionPackage(questionPackage: QuestionPackage)
+    @Query("SELECT * FROM Question WHERE questionId=(:id)")
+    fun getQuestion(id: UUID): LiveData<Question?>
 
     @Insert
     fun addQuestion(question: Question)
@@ -29,5 +25,5 @@ interface QuestionDao {
     fun updateQuestion(question: Question)
 
     @Delete
-    fun deleteQuestionPackage(questionPackage: QuestionPackage)
+    fun deleteQuestion(question: Question)
 }

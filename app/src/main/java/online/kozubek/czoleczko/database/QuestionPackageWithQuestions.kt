@@ -9,7 +9,7 @@ data class QuestionPackageWithQuestions(
     @Embedded val questionPackage: QuestionPackage,
     @Relation(
         parentColumn = "questionPackageId",
-        entityColumn = "questionId"
+        entityColumn = "packageId"
     )
     val questions: List<Question>
 )
