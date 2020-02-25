@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
-import online.kozubek.czoleczko.database.QuestionPackageWithQuestions
+//import online.kozubek.czoleczko.database.QuestionPackageWithQuestions
 
 class QuestionPackageViewModel(private val context: Context) : BaseObservable() {
     var questionPackage: QuestionPackage? = null

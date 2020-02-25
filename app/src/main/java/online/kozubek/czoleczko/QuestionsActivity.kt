@@ -73,17 +73,17 @@ class QuestionsActivity : AppCompatActivity(), EditQuestionFragment.Callbacks {
         questionAdditionalText: String,
         questionPackageId: UUID?
     ) {
-        if(questionId != null) {
-            binding.viewModel?.updateQuestion(Question(questionId, questionText, questionAdditionalText, questionPackageId!!))
-        } else {
-            val question = Question(
-                text = questionText,
-                additionalText = questionAdditionalText,
-                packageId = binding.viewModel?.questionPackageId!!
-            )
-
-            binding.viewModel?.addQuestion(question)
-        }
+//        if(questionId != null) {
+//            binding.viewModel?.updateQuestion(Question(questionId, questionText, questionAdditionalText, questionPackageId!!))
+//        } else {
+//            val question = Question(
+//                text = questionText,
+//                additionalText = questionAdditionalText,
+//                packageId = binding.viewModel?.questionPackageId!!
+//            )
+//
+//            binding.viewModel?.addQuestion(question)
+//        }
     }
 
     private fun showAddQuestionDialog() {

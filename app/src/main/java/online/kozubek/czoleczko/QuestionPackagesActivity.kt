@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,6 +26,8 @@ private const val TAG = "QuestionPackagesRepo"
 class QuestionPackagesActivity : AppCompatActivity(), AddQuestionPackageFragment.Callbacks {
 
     private lateinit var binding: ActivityQuestionPackagesBinding
+
+    private var packagesList: List<QuestionPackage> = emptyList()
 
     //TODO("Ask someone whether the button should be managed from ViewModel")
     private lateinit var addPackageButton: Button
@@ -43,7 +46,8 @@ class QuestionPackagesActivity : AppCompatActivity(), AddQuestionPackageFragment
 
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(this@QuestionPackagesActivity)
-            adapter = QuestionPackageAdapter(listOf<QuestionPackage>(QuestionPackage(name = "jeden"), QuestionPackage(name = "dwa"), QuestionPackage(name="trzy")))
+            //adapter = QuestionPackageAdapter(listOf<QuestionPackage>(QuestionPackage(name = "jeden"), QuestionPackage(name = "dwa"), QuestionPackage(name="trzy")))
+            adapter = QuestionPackageAdapter(emptyList())
         }
 
 
@@ -53,20 +57,24 @@ class QuestionPackagesActivity : AppCompatActivity(), AddQuestionPackageFragment
         }
     }
 
-//    override fun onCreateView(name: String, context: Context, attrs: AttributeSet): View? {
-//        val view = super.onCreateView(name, context, attrs)
-//
-//
-//        questionPackagesViewModel.questionPackagesWithQuestionsLiveData.observe(
-//            this,
-//            Observer {
-//                Log.d("TEST", "run")
-//                binding.recyclerView.adapter = QuestionPackageAdapter(it)
-//            }
-//        )
-//
-//        return view
-//    }
+    override fun onCreateView(name: String, context: Context, attrs: AttributeSet): View? {
+        val view = super.onCreateView(name, context, attrs)
+
+
+       // questionPackagesViewModel.questionPackages.observe(
+        QuestionRepository.get().getQuestionPackages().observe(
+            this@QuestionPackagesActivity,
+            Observer {
+                if(it != packagesList) {
+                    binding.recyclerView.adapter = QuestionPackageAdapter(it)
+                    packagesList = it
+                    Log.d("TEST", "observer update, ${it.size} items")
+                }
+            }
+        )
+
+        return view
+    }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val rtn = super.onCreateOptionsMenu(menu)
@@ -124,7 +132,7 @@ class QuestionPackagesActivity : AppCompatActivity(), AddQuestionPackageFragment
         }
 
         override fun getItemCount(): Int {
-            Log.e("TEST", questionPackages.size.toString())
+            //Log.e("TEST", questionPackages.size.toString())
             return questionPackages.size
         }
 
