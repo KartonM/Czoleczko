@@ -26,8 +26,7 @@ private const val TAG = "QuestionPackagesRepo"
 class QuestionPackagesActivity : AppCompatActivity(), AddQuestionPackageFragment.Callbacks {
 
     private lateinit var binding: ActivityQuestionPackagesBinding
-
-    private var packagesList: List<QuestionPackage> = emptyList()
+    private lateinit var adapter: QuestionPackageAdapter
 
     //TODO("Ask someone whether the button should be managed from ViewModel")
     private lateinit var addPackageButton: Button
@@ -39,15 +38,15 @@ class QuestionPackagesActivity : AppCompatActivity(), AddQuestionPackageFragment
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        adapter = QuestionPackageAdapter(emptyList())
         binding = DataBindingUtil.setContentView(this, R.layout.activity_question_packages)
-        binding.lifecycleOwner = this
 
+        binding.lifecycleOwner = this
         binding.viewModel = questionPackagesViewModel
 
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(this@QuestionPackagesActivity)
-            //adapter = QuestionPackageAdapter(listOf<QuestionPackage>(QuestionPackage(name = "jeden"), QuestionPackage(name = "dwa"), QuestionPackage(name="trzy")))
-            adapter = QuestionPackageAdapter(emptyList())
+            adapter = this@QuestionPackagesActivity.adapter
         }
 
 
@@ -61,14 +60,12 @@ class QuestionPackagesActivity : AppCompatActivity(), AddQuestionPackageFragment
         val view = super.onCreateView(name, context, attrs)
 
 
-       // questionPackagesViewModel.questionPackages.observe(
-        QuestionRepository.get().getQuestionPackages().observe(
+        questionPackagesViewModel.questionPackages.observe(
+        //QuestionRepository.get().getQuestionPackages().observe(
             this@QuestionPackagesActivity,
             Observer {
-                if(it != packagesList) {
-                    binding.recyclerView.adapter = QuestionPackageAdapter(it)
-                    packagesList = it
-                    Log.d("TEST", "observer update, ${it.size} items")
+                it?.let {
+                    adapter.setData(it)
                 }
             }
         )
@@ -116,7 +113,7 @@ class QuestionPackagesActivity : AppCompatActivity(), AddQuestionPackageFragment
         }
     }
 
-    private inner class QuestionPackageAdapter(private val questionPackages: List<QuestionPackage>) : RecyclerView.Adapter<QuestionPackageViewHolder>() {
+    private inner class QuestionPackageAdapter(private var questionPackages: List<QuestionPackage>) : RecyclerView.Adapter<QuestionPackageViewHolder>() {
         override fun onCreateViewHolder(
             parent: ViewGroup,
             viewType: Int
@@ -138,6 +135,10 @@ class QuestionPackagesActivity : AppCompatActivity(), AddQuestionPackageFragment
 
         override fun onBindViewHolder(holder: QuestionPackageViewHolder, position: Int) {
             holder.bind(questionPackages[position])
+        }
+
+        fun setData(questionPackages: List<QuestionPackage>) {
+            this.questionPackages = questionPackages
         }
     }
 }
