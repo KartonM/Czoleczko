@@ -21,7 +21,10 @@ class QuestionPackageViewModel(private val context: Context) : BaseObservable() 
         get() = questionPackageWithQuestions?.questions?.size
 
     fun onPackageClick() {
+        val id = questionPackageWithQuestions?.questionPackage?.questionPackageId!!
+        val intent = GameActivity.newIntent(context, id)
 
+        context.startActivity(intent)
     }
 
     fun onDeleteClick() {
