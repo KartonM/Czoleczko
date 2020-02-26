@@ -35,10 +35,7 @@ class QuestionPackagesActivity : AppCompatActivity(), AddQuestionPackageFragment
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.i("DUPA", "przed super onCreate")
         super.onCreate(savedInstanceState)
-        Log.i("DUPA", "po super onCreate")
-
 
         adapter = QuestionPackageAdapter()
         binding = DataBindingUtil.setContentView(this, R.layout.activity_question_packages)
