@@ -1,10 +1,8 @@
 package online.kozubek.czoleczko
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
+import android.view.*
+import androidx.core.view.GestureDetectorCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import online.kozubek.czoleczko.databinding.FragmentGameplayBinding
@@ -37,9 +35,25 @@ class GameplayFragment : Fragment() {
         binding.viewModel = gameplayViewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
+
+        val flyGestureDetector = GestureDetectorCompat(context, FlingGestureListener())
+        binding.layout.setOnTouchListener { v, event ->
+            flyGestureDetector.onTouchEvent(event)
+        }
         return binding.root
     }
 
+    private inner class FlingGestureListener : GestureDetector.SimpleOnGestureListener() {
+        override fun onFling(
+            e1: MotionEvent?,
+            e2: MotionEvent?,
+            velocityX: Float,
+            velocityY: Float
+        ): Boolean {
+            binding.viewModel?.onFling()
+            return true
+        }
+    }
 
     companion object {
         fun newInstance(questionPackageId: String): GameplayFragment {

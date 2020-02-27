@@ -8,11 +8,14 @@ import java.util.*
 class GameplayViewModel(private val questionPackageId: UUID) : ViewModel() {
     private val questionRepository: QuestionRepository = QuestionRepository.get()
     private val questionsLiveData: LiveData<List<Question>> = questionRepository.getQuestionsByPackageId(questionPackageId)
+    private var gameInProgress: Boolean = false
 
     private lateinit var questions: List<Question>
     private lateinit var game: Game
+
     private lateinit var currentQuestionObserver: Observer<Question>
     private lateinit var timeLeftObserver: Observer<Long>
+    private lateinit var gameResultObserver: Observer<GameResult>
 
     var questionText = MutableLiveData<String>().apply { value = "Taco Hemingway" }
     var questionAdditionalText = MutableLiveData<String>().apply { value = "Taco Hemingway" }
@@ -23,6 +26,18 @@ class GameplayViewModel(private val questionPackageId: UUID) : ViewModel() {
         questionsLiveData.observeForever(observer)
     }
 
+    fun onScreenTapped() {
+        if(game != null && gameInProgress) {
+            game.questionAnsweredCorrectly()
+        }
+    }
+
+    fun onFling() {
+        Log.d("GESTURE", "Fling!")
+        if(game != null && gameInProgress) {
+            game.skipQuestion()
+        }
+    }
 
     inner class QuestionsObserver : Observer<List<Question>> {
         override fun onChanged(t: List<Question>?) {
@@ -30,6 +45,7 @@ class GameplayViewModel(private val questionPackageId: UUID) : ViewModel() {
                 questions = t
                 questionsLiveData.removeObserver(this)
                 game = Game(questions)
+                gameInProgress = true
 
                 currentQuestionObserver = Observer{
                     questionText.value = it.text
@@ -41,6 +57,14 @@ class GameplayViewModel(private val questionPackageId: UUID) : ViewModel() {
                     timeLeft.value = if(it < 60) it.toString() else "${it/60}:${it%60}"
                 }
                 game.secondsLeft.observeForever(timeLeftObserver)
+
+                gameResultObserver = Observer {
+                    if(it.hasGameEnded) {
+                        gameInProgress = false
+                    }
+                    Log.i("SCORE", it.toString())
+                }
+                game.resultLiveData.observeForever(gameResultObserver)
             }
         }
     }
@@ -49,5 +73,6 @@ class GameplayViewModel(private val questionPackageId: UUID) : ViewModel() {
         super.onCleared()
         game.currentQuestion.removeObserver(currentQuestionObserver)
         game.secondsLeft.removeObserver(timeLeftObserver)
+        game.resultLiveData.removeObserver(gameResultObserver)
     }
 }
