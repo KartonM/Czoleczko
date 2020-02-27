@@ -17,6 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:text="@string/result_info"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -28,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:text="TextView"
+            android:text="@{@string/score(viewModel.playerScore, viewModel.maxScore)}"
             android:textSize="36sp"
             app:layout_constraintBottom_toTopOf="@+id/guideline2"
             app:layout_constraintEnd_toEndOf="parent"
@@ -59,7 +60,7 @@
             app:layout_constraintGuide_percent="0.5" />
 
         <Button
-            android:id="@+id/button3"
+            android:id="@+id/back_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="48dp"
@@ -69,7 +70,7 @@
             app:layout_constraintTop_toTopOf="@+id/guideline2" />
 
         <Button
-            android:id="@+id/button4"
+            android:id="@+id/replay_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"

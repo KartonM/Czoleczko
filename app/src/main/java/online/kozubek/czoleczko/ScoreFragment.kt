@@ -37,8 +37,8 @@ class ScoreFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        scoreViewModel.playerScore = savedInstanceState?.getInt(ARG_PLAYER_SCORE) ?: 0
-        scoreViewModel.maxScore = savedInstanceState?.getInt(ARG_MAX_SCORE) ?: 0
+        scoreViewModel.playerScore.value = arguments?.getInt(ARG_PLAYER_SCORE) ?: 0
+        scoreViewModel.maxScore.value = arguments?.getInt(ARG_MAX_SCORE) ?: 0
     }
 
     override fun onCreateView(
@@ -48,6 +48,13 @@ class ScoreFragment : Fragment() {
     ): View? {
         binding = FragmentScoreBinding.inflate(inflater, container, false)
         binding.viewModel = scoreViewModel
+
+        binding.backButton.setOnClickListener {
+            callbacks?.onBackClicked()
+        }
+        binding.replayButton.setOnClickListener {
+            callbacks?.onReplayClicked()
+        }
 
         return binding.root
     }

@@ -50,7 +50,11 @@ class GameplayFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
 
         gameplayViewModel.gameResultLiveData.observe(viewLifecycleOwner, Observer {
-            callbacks?.onGameEnded(it)
+            it?.let {result ->
+                if(result.hasGameEnded) {
+                    callbacks?.onGameEnded(result)
+                }
+            }
         })
         val flyGestureDetector = GestureDetectorCompat(context, FlingGestureListener())
         binding.layout.setOnTouchListener { v, event ->

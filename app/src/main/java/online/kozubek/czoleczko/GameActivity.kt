@@ -10,9 +10,22 @@ import java.util.*
 
 private const val EXTRA_PACKAGE_ID = "online.kozubek.czoleczko.question_package_id"
 
-class GameActivity : AppCompatActivity(), GameplayFragment.Callbacks {
+class GameActivity : AppCompatActivity(), GameplayFragment.Callbacks, ScoreFragment.Callbacks {
     override fun onGameEnded(result: GameResult) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        var scoreFragment = ScoreFragment.newInstance(result)
+
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.fragment_container, scoreFragment)
+            .commit()
+    }
+
+    override fun onBackClicked() {
+        finish()
+    }
+
+    override fun onReplayClicked() {
+        startGame()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,15 +41,18 @@ class GameActivity : AppCompatActivity(), GameplayFragment.Callbacks {
         val currentFragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
 
         if(currentFragment == null) {
-
-            val questionPackageId = intent.extras?.getString(EXTRA_PACKAGE_ID)!!
-            val fragment = GameplayFragment.newInstance(questionPackageId)
-
-            supportFragmentManager
-                .beginTransaction()
-                .add(R.id.fragment_container, fragment)
-                .commit()
+            startGame()
         }
+    }
+
+    private fun startGame() {
+        val questionPackageId = intent.extras?.getString(EXTRA_PACKAGE_ID)!!
+        val fragment = GameplayFragment.newInstance(questionPackageId)
+
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.fragment_container, fragment)
+            .commit()
     }
 
     companion object {
