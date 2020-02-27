@@ -24,6 +24,9 @@ interface QuestionPackageDao {
     @Insert
     fun addQuestionPackage(questionPackage: QuestionPackage)
 
+    @Update
+    fun updateQuestionPackage(questionPackage: QuestionPackage)
+
     @Delete
     fun deleteQuestionPackage(questionPackage: QuestionPackage)
 }

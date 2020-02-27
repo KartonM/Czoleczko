@@ -22,11 +22,13 @@ import java.util.*
 
 private const val EXTRA_PACKAGE_ID = "online.kozubek.czoleczko.question_package_id"
 
-class QuestionsActivity : AppCompatActivity(), EditQuestionFragment.Callbacks {
+class QuestionsActivity : AppCompatActivity(), EditQuestionFragment.Callbacks, SingleTextInputDialogFragment.Callbacks {
 
     private lateinit var viewModelFactory: QuestionsViewModelFactory
     private lateinit var binding: ActivityQuestionsBinding
-    private  var adapter: QuestionAdapter = QuestionAdapter()
+    private var adapter: QuestionAdapter = QuestionAdapter()
+
+    private var questionPackage: QuestionPackage? = null
 
     private val questionsViewModel: QuestionsViewModel by lazy {
         ViewModelProviders.of(this, viewModelFactory).get(QuestionsViewModel::class.java)
@@ -58,6 +60,7 @@ class QuestionsActivity : AppCompatActivity(), EditQuestionFragment.Callbacks {
                 it?.let {
                     adapter.setData(it.questions)
                     supportActionBar?.title = it.questionPackage.name
+                    questionPackage = it.questionPackage
                 }
             }
         )
@@ -82,7 +85,9 @@ class QuestionsActivity : AppCompatActivity(), EditQuestionFragment.Callbacks {
                 true
             }
             R.id.edit_question_package_name -> {
-
+                SingleTextInputDialogFragment
+                    .newInstance(R.string.insert_package_name, R.string.package_name, questionPackage?.name ?: "")
+                    .show(supportFragmentManager, "EDIT_PACKAGE_NAME")
                 true
             } else -> super.onOptionsItemSelected(item)
         }
@@ -95,7 +100,7 @@ class QuestionsActivity : AppCompatActivity(), EditQuestionFragment.Callbacks {
         questionPackageId: UUID?
     ) {
         if(questionId != null) {
-            binding.viewModel?.updateQuestion(Question(questionId, questionText, questionAdditionalText, questionPackageId!!))
+            questionsViewModel.updateQuestion(Question(questionId, questionText, questionAdditionalText, questionPackageId!!))
         } else {
             val question = Question(
                 text = questionText,
@@ -103,7 +108,14 @@ class QuestionsActivity : AppCompatActivity(), EditQuestionFragment.Callbacks {
                 packageId = binding.viewModel?.questionPackageId!!
             )
 
-            binding.viewModel?.addQuestion(question)
+            questionsViewModel.addQuestion(question)
+        }
+    }
+
+    override fun onTextInserted(input: String) {
+        questionPackage?.let { questionPackage ->
+            questionPackage.name = input
+            questionsViewModel.updateQuestionPackage(questionPackage)
         }
     }
 

@@ -37,6 +37,12 @@ class QuestionRepository private constructor(context: Context) {
         }
     }
 
+    fun updateQuestionPackage(questionPackage: QuestionPackage) {
+        executor.execute {
+            questionPackageDao.updateQuestionPackage(questionPackage)
+        }
+    }
+
     fun addQuestion(question: Question) {
         executor.execute {
             questionDao.addQuestion(question)

@@ -25,4 +25,8 @@ class QuestionsViewModel(val questionPackageId: UUID) : ViewModel() {
     fun updateQuestion(question: Question) {
         questionRepository.updateQuestion(question)
     }
+
+    fun updateQuestionPackage(questionPackage: QuestionPackage) {
+        questionRepository.updateQuestionPackage(questionPackage)
+    }
 }
