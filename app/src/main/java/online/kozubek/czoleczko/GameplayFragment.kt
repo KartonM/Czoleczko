@@ -1,14 +1,22 @@
 package online.kozubek.czoleczko
 
+import android.animation.ArgbEvaluator
+import android.animation.ValueAnimator
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.*
+import androidx.core.content.ContextCompat
 import androidx.core.view.GestureDetectorCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.Observer
 import online.kozubek.czoleczko.databinding.FragmentGameplayBinding
 import java.util.*
+import kotlin.concurrent.schedule
+
+private const val COLOR_ANIMATION_DURATION = 250L
 
 private const val ARG_PACKAGE_ID = "id"
 
@@ -57,8 +65,16 @@ class GameplayFragment : Fragment() {
             }
         })
         val flyGestureDetector = GestureDetectorCompat(context, FlingGestureListener())
-        binding.layout.setOnTouchListener { v, event ->
-            flyGestureDetector.onTouchEvent(event)
+
+        binding.layout.apply {
+            setOnTouchListener { v, event ->
+                flyGestureDetector.onTouchEvent(event)
+            }
+
+            setOnClickListener {
+                animateBackground(Color.GREEN)
+                gameplayViewModel.onScreenTapped()
+            }
         }
         return binding.root
     }
@@ -68,6 +84,24 @@ class GameplayFragment : Fragment() {
         callbacks = null
     }
 
+
+    fun animateBackground(colorTo: Int) {
+        var colorFrom = (binding.layout.background as? ColorDrawable)?.color ?: Color.WHITE
+
+        val colorAnimation: ValueAnimator = ValueAnimator
+            .ofObject(ArgbEvaluator(), colorFrom, colorTo)
+            .setDuration(COLOR_ANIMATION_DURATION)
+
+        colorAnimation.apply {
+            addUpdateListener { animator ->
+                binding.layout.setBackgroundColor(animator.animatedValue as Int)
+            }
+            repeatMode = ValueAnimator.REVERSE
+            repeatCount = 1
+        }
+        colorAnimation.start()
+    }
+
     private inner class FlingGestureListener : GestureDetector.SimpleOnGestureListener() {
         override fun onFling(
             e1: MotionEvent?,
@@ -75,7 +109,8 @@ class GameplayFragment : Fragment() {
             velocityX: Float,
             velocityY: Float
         ): Boolean {
-            binding.viewModel?.onFling()
+            gameplayViewModel.onFling()
+            animateBackground(Color.RED)
             return true
         }
     }
