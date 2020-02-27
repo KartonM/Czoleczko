@@ -17,4 +17,7 @@
     <string name="question_text">Treść pytania</string>
     <string name="question_additional_text">Dodatkowe info (niewymagane)</string>
     <string name="insert_question">Wprowadź pytanie</string>
+    <string name="replay">Jeszcze raz!</string>
+    <string name="back">Powrót</string>
+    <string name="result_info">Brawo! Twój wynik to:</string>
 </resources>

@@ -20,6 +20,7 @@ class GameplayViewModel(private val questionPackageId: UUID) : ViewModel() {
     var questionText = MutableLiveData<String>().apply { value = "Taco Hemingway" }
     var questionAdditionalText = MutableLiveData<String>().apply { value = "Taco Hemingway" }
     var timeLeft = MutableLiveData<String>().apply { value = "Taco Hemingway" }
+    var gameResultLiveData = MutableLiveData<GameResult>()
 
     init {
         val observer = QuestionsObserver()
@@ -62,6 +63,7 @@ class GameplayViewModel(private val questionPackageId: UUID) : ViewModel() {
                     if(it.hasGameEnded) {
                         gameInProgress = false
                     }
+                    gameResultLiveData.value = it
                     Log.i("SCORE", it.toString())
                 }
                 game.resultLiveData.observeForever(gameResultObserver)

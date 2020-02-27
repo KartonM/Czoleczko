@@ -10,7 +10,10 @@ import java.util.*
 
 private const val EXTRA_PACKAGE_ID = "online.kozubek.czoleczko.question_package_id"
 
-class GameActivity : AppCompatActivity() {
+class GameActivity : AppCompatActivity(), GameplayFragment.Callbacks {
+    override fun onGameEnded(result: GameResult) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
