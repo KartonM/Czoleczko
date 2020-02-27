@@ -1,13 +1,9 @@
 package online.kozubek.czoleczko
 
-import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.AttributeSet
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.databinding.DataBindingUtil
@@ -15,14 +11,15 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.GridLayoutManager
 import online.kozubek.czoleczko.database.QuestionPackageWithQuestions
 import online.kozubek.czoleczko.databinding.ActivityQuestionPackagesBinding
 import online.kozubek.czoleczko.databinding.QuestionPackageListItemBinding
 
 private const val TAG = "QuestionPackagesRepo"
 
-class QuestionPackagesActivity : AppCompatActivity(), AddQuestionPackageFragment.Callbacks {
+private const val PACKAGE_NAME_INPUT_REQUEST_CODE = 0
+
+class QuestionPackagesActivity : AppCompatActivity(), SingleTextInputDialogFragment.Callbacks {
 
     private lateinit var binding: ActivityQuestionPackagesBinding
     private lateinit var adapter: QuestionPackageAdapter
@@ -80,13 +77,15 @@ class QuestionPackagesActivity : AppCompatActivity(), AddQuestionPackageFragment
         }
     }
 
-    override fun onPackageNameInserted(name: String) {
-        binding.viewModel?.addQuestionPackage(QuestionPackage(name = name))
+    override fun onTextInserted(input: String) {
+        binding.viewModel?.addQuestionPackage(QuestionPackage(name = input))
     }
 
     private fun showAddPackageDialog() {
-        AddQuestionPackageFragment().show(supportFragmentManager, "ADD_PACKAGE")
-
+//        SingleTextInputDialogFragment().show(supportFragmentManager, "ADD_PACKAGE")
+        SingleTextInputDialogFragment
+            .newInstance(R.string.insert_package_name, R.string.package_name)
+            .show(supportFragmentManager, "ADD_PACKAGE")
     }
 
     private inner class QuestionPackageViewHolder(private val binding: QuestionPackageListItemBinding)
