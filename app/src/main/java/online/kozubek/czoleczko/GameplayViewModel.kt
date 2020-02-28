@@ -1,11 +1,12 @@
 package online.kozubek.czoleczko
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.*
 import androidx.lifecycle.Observer
 import java.util.*
 
-class GameplayViewModel(private val questionPackageId: UUID) : ViewModel() {
+class GameplayViewModel(private val context: Context, private val questionPackageId: UUID) : ViewModel() {
     private val questionRepository: QuestionRepository = QuestionRepository.get()
     private val questionsLiveData: LiveData<List<Question>> = questionRepository.getQuestionsByPackageId(questionPackageId)
     private var gameInProgress: Boolean = false
@@ -45,7 +46,7 @@ class GameplayViewModel(private val questionPackageId: UUID) : ViewModel() {
             if(t != null && t.isNotEmpty()) {
                 questions = t
                 questionsLiveData.removeObserver(this)
-                game = Game(questions)
+                game = Game(context, questions)
                 gameInProgress = true
 
                 currentQuestionObserver = Observer{
@@ -55,7 +56,7 @@ class GameplayViewModel(private val questionPackageId: UUID) : ViewModel() {
                 game.currentQuestion.observeForever(currentQuestionObserver)
 
                 timeLeftObserver = Observer {
-                    timeLeft.value = if(it < 60) it.toString() else "${it/60}:${it%60}"
+                    timeLeft.value = if(it < 60) it.toString() else "${it/60}:${precedingZeroChar(it)}${it%60}"
                 }
                 game.secondsLeft.observeForever(timeLeftObserver)
 
@@ -77,4 +78,6 @@ class GameplayViewModel(private val questionPackageId: UUID) : ViewModel() {
         game.secondsLeft.removeObserver(timeLeftObserver)
         game.resultLiveData.removeObserver(gameResultObserver)
     }
+
+    private fun precedingZeroChar(timeInSeconds: Long): String = if(timeInSeconds/60 > 0 && timeInSeconds%60 < 10) "0" else ""
 }

@@ -1,31 +1,30 @@
 package online.kozubek.czoleczko
 
+import android.content.Context
 import android.os.CountDownTimer
 import androidx.lifecycle.MutableLiveData
 
-private const val QUESTION_COUNTDOWN_DURATION = 30200 as Long
-private const val QUESTIONS_PER_GAME = 3
 
-class Game(questions: List<Question>) {
+private const val TIME = 30000L
+class Game(context: Context, questions: List<Question>) {
 
     var currentQuestion: MutableLiveData<Question> = MutableLiveData<Question>()
-    var secondsLeft: MutableLiveData<Long> = MutableLiveData<Long>()//.apply { value =  0 }
+    var secondsLeft: MutableLiveData<Long> = MutableLiveData<Long>().apply { value =  0 }
     var resultLiveData: MutableLiveData<GameResult> = MutableLiveData<GameResult>()
 
-    private val result = GameResult(0, QUESTIONS_PER_GAME, false)
+    private val questionsPerGame = GamePreferences.getStoredQuestionsPerGameCount(context).coerceAtMost(questions.size)
+    private val questionCountdownDuration = GamePreferences.getStoredTimePerQuestionInSeconds(context) * 1000L + 200L
 
-    private val questions: List<Question> = questions.shuffled().subList(0, QUESTIONS_PER_GAME)
+    private val result = GameResult(0, questionsPerGame, false)
+
+    private val questions: List<Question> = questions.shuffled().subList(0, questionsPerGame)
     private var questionIndex: Int = 0
 
-    private lateinit var questionTimer: CountDownTimer
+    private var questionTimer: CountDownTimer? = null
     private var timeLeftInMilis: Long = 0
     set(value) {
         field = value
-        val currentValue = secondsLeft.value
-        if((currentValue != null && currentValue > (value/1000))
-            || currentValue == null) {
-            secondsLeft.value = (value/1000)
-        }
+        secondsLeft.value = (value/1000)
     }
 
     init {
@@ -49,7 +48,7 @@ class Game(questions: List<Question>) {
     private fun nextQuestion() {
         questionIndex++
 
-        if(questionIndex < QUESTIONS_PER_GAME) {
+        if(questionIndex < questionsPerGame) {
             updateQuestion()
             startQuestionTimer()
         } else {
@@ -63,10 +62,11 @@ class Game(questions: List<Question>) {
     }
 
     private fun startQuestionTimer() {
+        questionTimer?.cancel()
         questionTimer = QuestionCountDownTimer().start()
     }
 
-    private inner class QuestionCountDownTimer : CountDownTimer(QUESTION_COUNTDOWN_DURATION, 1000) {
+    private inner class QuestionCountDownTimer : CountDownTimer(questionCountdownDuration, 1000) {
         override fun onTick(millisUntilFinished: Long) {
             timeLeftInMilis = millisUntilFinished
         }

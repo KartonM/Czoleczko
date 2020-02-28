@@ -45,7 +45,7 @@ class GameplayFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         val questionPackageId = UUID.fromString(arguments?.getString(ARG_PACKAGE_ID))
-        viewModelFactory = GameplayViewModelFactory(questionPackageId)
+        viewModelFactory = GameplayViewModelFactory(requireContext(), questionPackageId)
     }
 
     override fun onCreateView(
