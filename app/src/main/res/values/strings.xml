@@ -1,3 +1,26 @@
 <resources>
-    <string name="app_name">Czoleczko</string>
+    <string name="app_name">Czółeczko</string>
+    <string name="play">Zagraj!</string>
+    <string name="settings">Ustawienia</string>
+    <string name="no_question_packages">Nie dodano jeszcze żadnej paczki z pytaniami.\nDodaj paczkę, aby zagrać.</string>
+    <string name="add_question_package">Dodaj paczkę</string>
+    <string name="question_count_label">Liczba pytań: %1$d</string>
+    <string name="new_question_package">Nowa Paczka Pytań</string>
+    <string name="confirm">ok</string>
+    <string name="cancel">anuluj</string>
+    <string name="insert_package_name">Wprowadź nazwę paczki</string>
+    <string name="package_name">Nazwa paczki</string>
+    <string name="no_questions">Nie dodano jeszcze źadnych pytań w tej paczce.</string>
+    <string name="add_question">Dodaj pytanie</string>
+    <string name="new_question">Dodaj pytanie</string>
+    <string name="edit_question_package_name">Zmień nazwę paczki</string>
+    <string name="question_text">Treść pytania</string>
+    <string name="question_additional_text">Dodatkowe info (niewymagane)</string>
+    <string name="insert_question">Wprowadź pytanie</string>
+    <string name="replay">Jeszcze raz!</string>
+    <string name="back">Powrót</string>
+    <string name="result_info">Brawo! Twój wynik to:</string>
+    <string name="score">%1$d/%2$d</string>
+    <string name="questions_per_game">Liczba pytań na grę</string>
+    <string name="time_per_question">Czas na pytanie</string>
 </resources>
